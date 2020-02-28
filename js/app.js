@@ -12,11 +12,8 @@ var k = 0;
 var setCards = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bicycle", "fa-diamond",
     "fa-bomb", "fa-leaf", "fa-bomb", "fa-bolt", "fa-bicycle", "fa-paper-plane-o", "fa-cube"
 ];
-// var myP= document.querySelector("p");
-// var addElement= document.createElement("p");
-//      mydeck.appendChild(addElement);
 
-
+// sets moves to 0
 document.getElementsByClassName("moves")[0].textContent = 0;
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -34,6 +31,7 @@ function shuffle(array) {
     return array;
 }
 
+//function that hide stars via modulo every 10 steps
 function hideStar() {
     if (x % 10 == 0) {
         y = y - 1;
@@ -41,11 +39,13 @@ function hideStar() {
     }
 };
 
+//function that increase number of moves
 function increaseNumber() {
     x = x + 1;
     document.getElementsByClassName("moves")[0].textContent = x;
 }
 
+//functino that change classname of second clicked card to "card" match and then seatch html to find class "card open show" and rename it to "card match"
 function cardMatch(event) {
     let classChildResult = event.target.lastChild.className;
     let classParentResult = event.target.className;
@@ -55,7 +55,7 @@ function cardMatch(event) {
     }
 };
 
-
+//function that change classname of second clicked card to "card and then search html to find class "card open show" and rename it to "card""
 function cardNoMatch(event) {
     let classChildResult = event.target.lastChild.className;
     let classParentResult = event.target.className;
@@ -68,7 +68,7 @@ function cardNoMatch(event) {
     }, 500)
 };
 
-
+// function that compares 0 and 1 item of "cards" list if they are same it will increase moves and check modulus of moves to decrease star .If they are not same card will change to black
 function compareCards(event) {
     let cardsResult = "";
 
@@ -89,6 +89,7 @@ function compareCards(event) {
     }
 };
 
+//function that set 0 to x viaroable which shows 0 to "moves" and shows all 3 stars
 function clearMoves() {
     x = 0;
     document.getElementsByClassName("moves")[0].textContent = 0;
@@ -97,7 +98,7 @@ function clearMoves() {
     }
 }
 
-
+//function that shuffles card from the list and change classnames with shuffled classes
 function changeCards(event) {
     setCards = shuffle(setCards);
     clearMoves();
@@ -108,6 +109,7 @@ function changeCards(event) {
     }
 };
 
+//function which stop Timer and clear it to 00:00
 function stopTimer() {
     clearInterval(myVar);
     k = 0;
@@ -117,6 +119,7 @@ function stopTimer() {
     minutesLabel.innerHTML = "00";
 }
 
+// Alert window when user won
 function myAlert() {
     if (confirm("You have won! \n You have made " + x + " moves \n Your success rate was " + y + " stars." + "\n It took you " + minutesLabel.textContent + ":" + secondsLabel.textContent)) {
         changeCards();
@@ -126,25 +129,25 @@ function myAlert() {
         clearInterval(myVar);
     }
 }
-
+//functino to set timer for seconds and minutes calling pad function to add 0 if the number is up to 9
 function setTimer() {
     totalSeconds += 1;
     secondsLabel.innerHTML = pad(totalSeconds % 60);
-    minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+    minutesLabel.innerHTML = pad(math.floor(totalSeconds / 60));
 }
 
-function pad(val) {
-    var valString = val + "";
+function pad(value) {
+    var valString = value + "";
     if (valString.length < 2) {
         return "0" + valString;
     } else {
-        console.log(valString);
         return valString;
     }
 }
 
 
-
+// function that check if repeat icon was clicked , if so, it will change cards. It also check first click and start timer. And it chances classname of first clicked card to "card open show" to show interval
+// Then it puts innerHTML of clicked card into "card" list and start compareCard function.
 function respondToTheClick(event) {
     if (event.target.className == "fa fa-repeat") {
         changeCards(event);
@@ -161,7 +164,7 @@ function respondToTheClick(event) {
 
 
 
-
+// eventlistener applied to .container class 
 mydeck.addEventListener('click', respondToTheClick);
 
 
