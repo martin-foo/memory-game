@@ -10,8 +10,7 @@ var x = 0;
 var y = 3;
 var k = 0;
 var setCards = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-anchor", "fa-leaf", "fa-bicycle", "fa-diamond",
-    "fa-bomb", "fa-leaf", "fa-bomb", "fa-bolt", "fa-bicycle", "fa-paper-plane-o", "fa-cube"
-];
+    "fa-bomb", "fa-leaf", "fa-bomb", "fa-bolt", "fa-bicycle", "fa-paper-plane-o", "fa-cube"];
 
 // sets moves to 0
 document.getElementsByClassName("moves")[0].textContent = 0;
@@ -35,9 +34,15 @@ function shuffle(array) {
 function hideStar() {
     if (x % 10 == 0) {
         y = y - 1;
-        document.getElementsByClassName("fa fa-star")[y].style.visibility = "hidden";
+        if (y > 0){
+           document.getElementsByClassName("fa fa-star")[y].style.visibility = "hidden";
+        }
+        else{
+          y=1;
+          document.getElementsByClassName("fa fa-star")[y].style.visibility = "hidden";
+        }
     }
-};
+}
 
 //function that increase number of moves
 function increaseNumber() {
@@ -53,7 +58,7 @@ function cardMatch(event) {
     if (document.getElementsByClassName(classParentResult)[0].lastChild.className = classChildResult) {
         document.getElementsByClassName(classParentResult)[0].className = "card match";
     }
-};
+}
 
 //function that change classname of second clicked card to "card and then search html to find class "card open show" and rename it to "card""
 function cardNoMatch(event) {
@@ -66,7 +71,7 @@ function cardNoMatch(event) {
             document.getElementsByClassName(classParentResult)[0].className = "card";
         }
     }, 500)
-};
+}
 
 // function that compares 0 and 1 item of "cards" list if they are same it will increase moves and check modulus of moves to decrease star .If they are not same card will change to black
 function compareCards(event) {
@@ -87,7 +92,7 @@ function compareCards(event) {
             cardNoMatch(event);
         }
     }
-};
+}
 
 //function that set 0 to x viaroable which shows 0 to "moves" and shows all 3 stars
 function clearMoves() {
@@ -107,12 +112,14 @@ function changeCards(event) {
         changeDeck[i].lastChild.className = "fa " + setCards[i];
 
     }
-};
+}
 
 //function which stop Timer and clear it to 00:00
 function stopTimer() {
     clearInterval(myVar);
     k = 0;
+    cards=[];
+    match=0;
     totalSeconds = 0;
     valString = 0;
     secondsLabel.innerHTML = "00";
@@ -121,7 +128,7 @@ function stopTimer() {
 
 // Alert window when user won
 function myAlert() {
-    if (confirm("You have won! \n You have made " + x + " moves \n Your success rate was " + y + " stars." + "\n It took you " + minutesLabel.textContent + ":" + secondsLabel.textContent)) {
+    if (confirm("You have won with " + x + " moves \n Your success rate was " + y + " stars." + "\n It took you " + minutesLabel.textContent + ":" + secondsLabel.textContent + "\n Press OK if you want to play again")) {
         changeCards();
         stopTimer();
     } else {
@@ -129,14 +136,15 @@ function myAlert() {
         clearInterval(myVar);
     }
 }
-//functino to set timer for seconds and minutes calling pad function to add 0 if the number is up to 9
+//functino to set timer for seconds and minutes calling pad function to add 0 if the number is up to 9 or whole number
 function setTimer() {
     totalSeconds += 1;
-    secondsLabel.innerHTML = pad(totalSeconds % 60);
-    minutesLabel.innerHTML = pad(math.floor(totalSeconds / 60));
+    secondsLabel.innerHTML = zero(totalSeconds % 60);
+    minutesLabel.innerHTML = zero(Math.floor(totalSeconds / 60));
+    console.log(totalSeconds);
 }
 
-function pad(value) {
+function zero(value) {
     var valString = value + "";
     if (valString.length < 2) {
         return "0" + valString;
@@ -151,6 +159,7 @@ function pad(value) {
 function respondToTheClick(event) {
     if (event.target.className == "fa fa-repeat") {
         changeCards(event);
+        stopTimer();
     } else if (event.target.className != "deck") {
         k += 1;
         if (k == 1) {
@@ -160,11 +169,11 @@ function respondToTheClick(event) {
         cards.push(event.target.innerHTML);
         compareCards(event)
     }
-};
+}
 
 
 
-// eventlistener applied to .container class 
+// eventlistener applied to .container class
 mydeck.addEventListener('click', respondToTheClick);
 
 
