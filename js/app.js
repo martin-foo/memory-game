@@ -1,7 +1,7 @@
-var mydeck = document.querySelector('.container');
-var changeDeck = document.body.querySelectorAll('.deck li');
-var minutesLabel = document.getElementById("minutes");
-var secondsLabel = document.getElementById("seconds");
+const mydeck = document.querySelector('.container');
+const changeDeck = document.body.querySelectorAll('.deck li');
+const minutesLabel = document.getElementById("minutes");
+const secondsLabel = document.getElementById("seconds");
 var totalSeconds = 0;
 var myVar = 0;
 var cards = [];
@@ -64,10 +64,11 @@ function cardMatch(event) {
 function cardNoMatch(event) {
     let classChildResult = event.target.lastChild.className;
     let classParentResult = event.target.className;
-
     setTimeout(function() {
         event.target.className = "card";
+        event.target.style.pointerEvents ="auto";
         if (document.getElementsByClassName(classParentResult)[0].className = "card open show") {
+            document.getElementsByClassName(classParentResult)[0].style.pointerEvents ="auto";
             document.getElementsByClassName(classParentResult)[0].className = "card";
         }
     }, 500)
@@ -109,8 +110,8 @@ function changeCards(event) {
     clearMoves();
     for (let i = 0; i <= 15; i++) {
         changeDeck[i].className = "card";
+        changeDeck[i].style.pointerEvents ="auto";
         changeDeck[i].lastChild.className = "fa " + setCards[i];
-
     }
 }
 
@@ -141,7 +142,6 @@ function setTimer() {
     totalSeconds += 1;
     secondsLabel.innerHTML = zero(totalSeconds % 60);
     minutesLabel.innerHTML = zero(Math.floor(totalSeconds / 60));
-    console.log(totalSeconds);
 }
 
 function zero(value) {
@@ -160,12 +160,13 @@ function respondToTheClick(event) {
     if (event.target.className == "fa fa-repeat") {
         changeCards(event);
         stopTimer();
-    } else if (event.target.className != "deck") {
+    } else if (event.target.className == "card") {
         k += 1;
         if (k == 1) {
             myVar = setInterval(setTimer, 1000);
         };
         event.target.className = "card open show";
+        event.target.style.pointerEvents ="none";
         cards.push(event.target.innerHTML);
         compareCards(event)
     }
